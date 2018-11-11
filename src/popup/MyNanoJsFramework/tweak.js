@@ -13,14 +13,28 @@ export function wrap(object) {
 
 let handler = {
     get: function(target, property, receiver) {
+        console.log("get", receiver, property);
         if (target[property] !== undefined) return target[property];
+        console.log("get1", receiver, property);
         //if (property === Symbol.iterator) return;//??
         if (isArrayLike(receiver) && receiver[0][property]) {
-            console.log("get", receiver, property);
+            console.log("get2", receiver, property);
             let properties = [];
-            for (let i = 0; i < receiver.length; i++) {
-                properties.push(receiver[i][property]);
+            if (typeof receiver[0][property]==="function") {
+                console.log("get3", receiver, property);
+                return function name(a,b,c,d,e,f,g) {
+                    console.log("get4", receiver, property);
+                    for (let i = 0; i < receiver.length; i++) {
+                        receiver[i][property](a,b,c,d,e,f,g)
+                    }
+                }
             }
+            else{
+                for (let i = 0; i < receiver.length; i++) {
+                    properties.push(receiver[i][property]);
+                }
+            }
+            Object.setPrototypeOf(properties, wrap(Array.prototype));
             return properties;
         } else {
             return undefined;
