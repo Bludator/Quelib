@@ -1,32 +1,60 @@
-import {wrap} from "./tweak.js";
-export {wrap, tweak} from "./tweak.js";
+import { wrap } from "./tweak.js";
+export { wrap, tweak } from "./tweak.js";
 
-export default function $(param){
+/**
+ * Create query object
+ * @param {Function|string} param -
+ * - Function to be called on DOMLoaded
+ * - string CSS query
+ */
+export default function $(param) {
     if (typeof param === "function") {
         if (document.readyState === "completed") {
-            param()
-        }else{
-            document.addEventListener("DOMContentLoaded", param)
+            param();
+        } else {
+            document.addEventListener("DOMContentLoaded", param);
         }
-    }else{
-        CreateObject.prototype = queryObject;
-        return new CreateObject(param)
+    } else {
+        
+        return new CreateObject(param);
     }
 }
+//Create prototype chain
+QueryObject.prototype = wrap(Array.prototype);
+var queryObject = new QueryObject();
+CreateObject.prototype = queryObject;
 
+//#region Aliases
+queryObject.addAlias("on", "addEventListener");
+queryObject.addAlias("off", "removeEventListener");
+//#endregion
+
+/**
+ * Creates and populates array in Magic proxy
+ * @param {*} query 
+ */
 function CreateObject(query) {
     let nodeList = document.querySelectorAll(query);
 
-    this.length = nodeList.length;
+    //Object.defineProperty skips Proxy
+    Object.defineProperty(this, "length", { value: nodeList.length});
     for (var i = 0; i < this.length; i++) {
-        this[i] = nodeList[i];
+        Object.defineProperty(this, i, { value: nodeList[i]});
     }
-    
 }
 
-function QueryObject(){
-    this.on = function(a, b){this.addEventListener(a,b)};
-    this.off = function(a, b){this.removeEventListener(a,b)};
+/**
+ * Constructor for query object (prototype for all $(...))
+ */
+function QueryObject() {
+    this.addAlias = function(alias, property) {
+        Object.defineProperty(this, alias, {
+            get: function() {
+                return this[property];
+            },
+            set: function(value) {
+                this[property] = value;
+            }
+        });
+    };
 }
-QueryObject.prototype = wrap(Array.prototype);
-var queryObject = new QueryObject();
