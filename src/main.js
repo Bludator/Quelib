@@ -1,5 +1,4 @@
 import { wrap } from "./tweak.js";
-export { wrap, tweak } from "./tweak.js";
 
 /**
  * Create query object
@@ -15,11 +14,11 @@ export default function $(param) {
             document.addEventListener("DOMContentLoaded", param);
         }
     } else {
-        
         return new CreateObject(param);
     }
 }
-//Create prototype chain
+//Create prototype chain:
+//CreateObject-->QueryObject-->(Proxy)-->Array
 QueryObject.prototype = wrap(Array.prototype);
 var queryObject = new QueryObject();
 CreateObject.prototype = queryObject;
@@ -47,6 +46,7 @@ function CreateObject(query) {
  * Constructor for query object (prototype for all $(...))
  */
 function QueryObject() {
+    //hide/show
     this.addAlias = function(alias, property) {
         Object.defineProperty(this, alias, {
             get: function() {
