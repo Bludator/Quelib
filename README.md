@@ -1,8 +1,8 @@
 |||
 ---|---
 Download package| ~~[npm]~~
-environment |ES6+|
-size (gzipped)|~ 3.2 KB (~ 1.4 KB)
+Environment |ES6+|
+Size (gzipped)|~ 3.2 KB (~ 1.4 KB)
 
 # Quelib
 As all libs of this kind even this one can do:
@@ -29,7 +29,7 @@ $(".homeButton").disabled = true;
 let array = $(".homeButton").id; 
 
 // Assigns click event handler to all .homeButtons 
-$(".homeButton").addEventListener(()=>{/*Go to homepage*/});
+$(".homeButton").addEventListener("click", ()=>{/*e.g. Go to homepage*/});
 ```
 ## Reference
 * `hide()`
