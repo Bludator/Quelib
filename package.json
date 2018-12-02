@@ -1,12 +1,28 @@
 {
-  "name": "jsautomagic",
-  "version": "1.0.0",
-  "description": "Magical JS query framework",
-  "main": "dist/main.js",
-  "keywords": [],
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Blutator",
-  "license": "ISC"
+    "name": "quelib",
+    "version": "0.1.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Bludator/Quelib"
+    },
+    "description": "A small yet useful JS query framework that blends the difference between HTML nodes and NodeLists",
+    "keywords": ["quelib", "js-framework", "css-selector", "proxy","ES2015" ],
+    "author": "Bludator",
+    "license": "MIT",
+    "devDependencies": {
+        "microbundle": "^0.8.1"
+    },
+    "browser": "./release/quelib.js",
+    "source": "./src/main.js",
+    "cjs:main": "/quelib.cjs.js",
+    "umd:main": "/quelib.umd.js",
+    "module": "/quelib.js",
+    "files": [
+        "/release",
+        "/src"
+    ],
+    "scripts": {
+        "build": "microbundle -o ./release",
+        "dev": "microbundle watch -o ./dist --raw"
+    }
 }
