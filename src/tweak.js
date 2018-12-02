@@ -31,8 +31,6 @@ export function setPrefixes(noMagic, queryMagic) {
 
 let handler = {
     get: function(target, property, receiver) {
-        console.log("get", receiver, property);
-
         return prefixResolution(
             property,
             receiver,
@@ -59,8 +57,6 @@ let handler = {
         );
     },
     set: function(target, property, value, receiver) {
-        console.log("set", receiver, property, value);
-
         prefixResolution(
             property,
             receiver,

@@ -42,11 +42,13 @@ function CreateObject(query) {
     }
 }
 
-//Register class for hide/show/toggle
 const collapsedClass = `.QuelibCollapsed`;
-document.styleSheets[0].insertRule(
-    collapsedClass + " { display: none !important}"
-);
+$(() => {
+    //Add CSS class for hide/show/toggle
+    let node = document.createElement("style");
+    document.head.appendChild(node);
+    node.sheet.insertRule(collapsedClass + " { display: none !important}");
+});
 
 /**
  * Constructor for query object (prototype for all $(...))
