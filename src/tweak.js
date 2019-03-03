@@ -1,22 +1,5 @@
 var RealPrefix = "_";
 var NodesPrefix = "$";
-/**
- * Inserts MagicProxy to prototype chain
- * @param {Object} instance instance whose prototype's prototype will be wrapped into MagicProxy
- */
-export default function tweak(instance) {
-    let prototype = Object.getPrototypeOf(instance);
-    let p = new Proxy(Object.getPrototypeOf(prototype), handler);
-    Object.setPrototypeOf(prototype, p);
-}
-
-/**
- * Wraps object into proxy
- * @param {Object} object 
- */
-export function wrap(object) {
-    return new Proxy(object, handler);
-}
 
 /**
  * Sets prefixes
@@ -27,6 +10,22 @@ export function wrap(object) {
 export function setPrefixes(noMagic, queryMagic) {
     RealPrefix = noMagic;
     NodesPrefix = queryMagic;
+}
+
+/**
+ * Inserts MagicProxy to prototype chain
+ * @param {Object} instance instance whose prototype will be wrapped into MagicProxy
+ */
+export default function setProxy(instance) {
+    Object.setPrototypeOf(instance, wrap(Object.getPrototypeOf(instance)));
+}
+
+/**
+ * Wraps object into proxy
+ * @param {Object} object
+ */
+export function wrap(object) {
+    return new Proxy(object, handler);
 }
 
 let handler = {
@@ -75,7 +74,7 @@ let handler = {
 
 /**
  * What to do?
- * @param {string} propertyName 
+ * @param {string} propertyName
  * @param {Object} receiver object on which is property needed
  * @param {function} doNormal Callback to do usual
  * @param {function} iterateNodes Callback to do magic
